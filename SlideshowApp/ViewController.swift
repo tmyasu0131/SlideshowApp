@@ -36,12 +36,8 @@ class ViewController: UIViewController {
         imageView.image = image
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // segueから遷移先のZoomViewControllerを取得する
-        let zoomViewController: ZoomViewController = segue.destination as! ZoomViewController
-        // 遷移先のZoomViewControllerで宣言しているdisplayZoomImageNoにdisplayImageNoを渡す
-        zoomViewController.displayZoomImageNo = displayImageNo
-        
+    
+    func stop (){
         if self.timer != nil {
         self.timer.invalidate()
         // nil にして再び再生(nil の時にタイマー生成)
@@ -54,6 +50,17 @@ class ViewController: UIViewController {
         // 背景色・ボタン内テキストサイズを戻す
         self.view.backgroundColor = UIColor.white
         }
+    }
+    
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // segueから遷移先のZoomViewControllerを取得する
+        let zoomViewController: ZoomViewController = segue.destination as! ZoomViewController
+        // 遷移先のZoomViewControllerで宣言しているdisplayZoomImageNoにdisplayImageNoを渡す
+        zoomViewController.displayZoomImageNo = displayImageNo
+        
+        self.stop()
     }
     
     // 表示している画像の番号を元に画像を表示する
@@ -127,17 +134,7 @@ class ViewController: UIViewController {
             self.view.backgroundColor = UIColor.lightGray
             
         } else if self.timer != nil {
-            // タイマーを停止
-            self.timer.invalidate()
-            // nil にして再び再生(nil の時にタイマー生成)
-            self.timer = nil
-            // 再生・停止ボタンタップ時に進むボタン・戻るボタンのタップ非表示
-            nextButton.isEnabled = true
-            backButton.isEnabled = true
-            // ボタンの名前を再生とする
-            switchButton.setTitle("再生", for: .normal)
-            // 背景色・ボタン内テキストサイズを戻す
-            self.view.backgroundColor = UIColor.white
+            self.stop()
         }
     }
     
